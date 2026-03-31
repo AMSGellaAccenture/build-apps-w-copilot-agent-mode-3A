@@ -1,6 +1,10 @@
 {
     "chat.tools.terminal.autoApprove": {
         "../../.venv/bin/python": true,
-        "lsof": true
+        "lsof": true,
+        "/^cd /workspaces/build-apps-w-copilot-agent-mode-3A/octofit-tracker/frontend && npm start$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
     }
 }
