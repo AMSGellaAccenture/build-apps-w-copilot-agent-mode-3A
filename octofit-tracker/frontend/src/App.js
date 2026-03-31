@@ -11,90 +11,91 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <nav className="navbar navbar-expand-lg navbar-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
           <div className="container-fluid">
             <Link className="navbar-brand" to="/">
-              <img src="/octofitapp-small.png" alt="Octofit Logo" />
+              <img src="/octofitapp-small.png" alt="Octofit Logo" className="me-2" style={{height: '40px'}} />
               Octofit Tracker
             </Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
-              <div className="navbar-nav ms-auto">
-                <Link className="nav-link" to="/activities">📋 Activities</Link>
-                <Link className="nav-link" to="/leaderboard">🏆 Leaderboard</Link>
-                <Link className="nav-link" to="/teams">👥 Teams</Link>
-                <Link className="nav-link" to="/users">👤 Users</Link>
-                <Link className="nav-link" to="/workouts">💪 Workouts</Link>
-              </div>
+              <ul className="navbar-nav">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/activities">Activities</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/leaderboard">Leaderboard</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/teams">Teams</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/users">Users</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/workouts">Workouts</Link>
+                </li>
+              </ul>
             </div>
           </div>
         </nav>
-        <div className="container-fluid">
-          <Routes>
-            <Route path="/activities" element={<Activities />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/teams" element={<Teams />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/workouts" element={<Workouts />} />
-            <Route path="/" element={
-              <div>
-                <div className="welcome-section">
-                  <h1>Welcome to Octofit Tracker</h1>
-                  <p>Track your fitness activities, compete with your team, and achieve your goals!</p>
-                </div>
-                <div className="row">
-                  <div className="col-md-6 col-lg-4 mb-4">
-                    <div className="card">
-                      <div className="card-header">📋 Activities</div>
+        <Routes>
+          <Route path="/activities" element={<Activities />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/workouts" element={<Workouts />} />
+          <Route path="/" element={
+            <div className="container mt-4">
+              <div className="jumbotron bg-light p-5 rounded">
+                <h1 className="display-4">Welcome to Octofit Tracker</h1>
+                <p className="lead">Track your fitness activities, join teams, and compete on the leaderboard!</p>
+                <hr className="my-4" />
+                <p>Select a section from the navigation menu above to get started.</p>
+                <div className="row mt-4">
+                  <div className="col-md-3">
+                    <div className="card text-center">
                       <div className="card-body">
-                        <p>Log and track your daily fitness activities</p>
+                        <h5 className="card-title">Activities</h5>
+                        <p className="card-text">Log and track your fitness activities.</p>
                         <Link to="/activities" className="btn btn-primary">View Activities</Link>
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6 col-lg-4 mb-4">
-                    <div className="card">
-                      <div className="card-header">🏆 Leaderboard</div>
+                  <div className="col-md-3">
+                    <div className="card text-center">
                       <div className="card-body">
-                        <p>See how you rank against others</p>
+                        <h5 className="card-title">Leaderboard</h5>
+                        <p className="card-text">See how you rank against others.</p>
                         <Link to="/leaderboard" className="btn btn-primary">View Leaderboard</Link>
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6 col-lg-4 mb-4">
-                    <div className="card">
-                      <div className="card-header">👥 Teams</div>
+                  <div className="col-md-3">
+                    <div className="card text-center">
                       <div className="card-body">
-                        <p>Create and manage your fitness teams</p>
+                        <h5 className="card-title">Teams</h5>
+                        <p className="card-text">Join or create fitness teams.</p>
                         <Link to="/teams" className="btn btn-primary">View Teams</Link>
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6 col-lg-4 mb-4">
-                    <div className="card">
-                      <div className="card-header">👤 Users</div>
+                  <div className="col-md-3">
+                    <div className="card text-center">
                       <div className="card-body">
-                        <p>Connect and compete with other users</p>
-                        <Link to="/users" className="btn btn-primary">View Users</Link>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-lg-4 mb-4">
-                    <div className="card">
-                      <div className="card-header">💪 Workouts</div>
-                      <div className="card-body">
-                        <p>Plan and track your workout routines</p>
+                        <h5 className="card-title">Workouts</h5>
+                        <p className="card-text">Browse suggested workouts.</p>
                         <Link to="/workouts" className="btn btn-primary">View Workouts</Link>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            } />
-          </Routes>
-        </div>
+            </div>
+          } />
+        </Routes>
       </div>
     </Router>
   );

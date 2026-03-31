@@ -1,119 +1,80 @@
 import React, { useEffect, useState } from 'react';
 
-function Workouts() {
+const Workouts = () => {
   const [workouts, setWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchWorkouts = async () => {
-      const endpoint = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`;
-      console.log('Fetching from workouts endpoint:', endpoint);
+    const codespaceName = process.env.REACT_APP_CODESPACE_NAME;
+    const url = `https://${codespaceName}-8000.app.github.dev/api/workouts/`;
+    console.log('Fetching workouts from:', url);
 
-      try {
-        const response = await fetch(endpoint);
+    fetch(url)
+      .then(response => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
+        return response.json();
+      })
+      .then(data => {
         console.log('Fetched workouts data:', data);
-
         // Handle both paginated and plain array responses
-        const workoutsData = data.results || data;
-        setWorkouts(Array.isArray(workoutsData) ? workoutsData : []);
-      } catch (err) {
-        console.error('Error fetching workouts:', err);
-        setError(err.message);
-      } finally {
+        const workoutsData = Array.isArray(data) ? data : data.results || [];
+        setWorkouts(workoutsData);
         setLoading(false);
-      }
-    };
-
-    fetchWorkouts();
+      })
+      .catch(error => {
+        console.error('Error fetching workouts:', error);
+        setError(error.message);
+        setLoading(false);
+      });
   }, []);
 
-  return (
-    <div>
-      <div className="card">
-        <div className="card-header">
-          <h2 className="mb-0">💪 Workouts</h2>
-        </div>
-        <div className="card-body">
-          {loading && (
-            <div className="spinner-container">
-              <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-            </div>
-          )}
-          
-          {error && (
-            <div className="alert alert-danger" role="alert">
-              Error loading workouts: {error}
-            </div>
-          )}
-
-          {!loading && !error && workouts.length === 0 && (
-            <div className="empty-state">
-              <p>No workouts found. Start planning your fitness routine!</p>
-            </div>
-          )}
-
-          {!loading && !error && workouts.length > 0 && (
-            <div className="table-responsive">
-              <table className="table table-hover table-striped">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Workout Name</th>
-                    <th>Type</th>
-                    <th>Duration</th>
-                    <th>Difficulty</th>
-                    <th>Exercises</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {workouts.map((workout) => (
-                    <tr key={workout.id}>
-                      <td>{workout.id || '-'}</td>
-                      <td>
-                        <strong>{workout.name || '-'}</strong>
-                      </td>
-                      <td>{workout.type || '-'}</td>
-                      <td>{workout.duration || '-'} min</td>
-                      <td>
-                        <span className={`badge bg-${getDifficultyColor(workout.difficulty)}`}>
-                          {workout.difficulty || '-'}
-                        </span>
-                      </td>
-                      <td>{workout.exercises_count || 0}</td>
-                      <td>
-                        <button className="btn btn-sm btn-primary">Start</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
+  if (loading) return (
+    <div className="container mt-4">
+      <div className="alert alert-info" role="alert">
+        <h4 className="alert-heading">Loading...</h4>
+        <p>Loading workouts...</p>
       </div>
     </div>
   );
-}
+  if (error) return (
+    <div className="container mt-4">
+      <div className="alert alert-danger" role="alert">
+        <h4 className="alert-heading">Error</h4>
+        <p>Error: {error}</p>
+      </div>
+    </div>
+  );
 
-function getDifficultyColor(difficulty) {
-  switch (difficulty?.toLowerCase()) {
-    case 'easy':
-      return 'success';
-    case 'medium':
-      return 'warning';
-    case 'hard':
-      return 'danger';
-    default:
-      return 'secondary';
-  }
-}
+  return (
+    <div className="container mt-4">
+      <h2 className="mb-4">Workouts</h2>
+      <div className="table-responsive">
+        <table className="table table-striped table-hover">
+          <thead className="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Suggested For</th>
+            </tr>
+          </thead>
+          <tbody>
+            {workouts.map((workout) => (
+              <tr key={workout.id}>
+                <td>{workout.id}</td>
+                <td>{workout.name}</td>
+                <td>{workout.description}</td>
+                <td>{workout.suggested_for}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
 
 export default Workouts;
